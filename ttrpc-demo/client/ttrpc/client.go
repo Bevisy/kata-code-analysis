@@ -19,9 +19,9 @@ func main() {
 		fmt.Fprintf(os.Stderr, "Failed to dial: %v \n", err)
 		os.Exit(1)
 	}
-	client := hello.NewHelloServiceClient(ttrpc.NewClient(conn))
-	serverResponse, err := client.HelloWorld(context.Background(), &hello.HelloRequest{
-		Msg: "Hello Server",
+	client := hello.NewGreetingServiceClient(ttrpc.NewClient(conn))
+	serverResponse, err := client.Greeting(context.Background(), &hello.HelloRequest{
+		Msg: "Hi greeting server",
 	})
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)

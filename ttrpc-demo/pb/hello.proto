@@ -2,8 +2,8 @@ syntax = "proto3";
 
 option go_package = "hello";
 
-service HelloService{
-    rpc HelloWorld(HelloRequest) returns (HelloResponse);
+service GreetingService{
+    rpc Greeting(HelloRequest) returns (HelloResponse);
 }
 
 message HelloRequest{

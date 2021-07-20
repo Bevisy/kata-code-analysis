@@ -17,25 +17,26 @@ const port = ":9000"
 func main() {
 
 	s, err := ttrpc.NewServer()
-	defer s.Close()
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+	defer s.Close()
+
 	lis, err := net.Listen("tcp", port)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
-	hello.RegisterHelloServiceService(s, &helloService{})
+	hello.RegisterGreetingServiceService(s, &greetingService{})
 	if err := s.Serve(context.Background(), lis); err != nil {
 		fmt.Fprintln(os.Stderr, err)
 	}
 }
 
-type helloService struct{}
+type greetingService struct{}
 
-func (s helloService) HelloWorld(ctx context.Context, r *hello.HelloRequest) (*hello.HelloResponse, error) {
+func (s greetingService) Greeting(ctx context.Context, r *hello.HelloRequest) (*hello.HelloResponse, error) {
 	if r.Msg == "" {
 		return nil, errors.New("ErrNoInputMsgGiven")
 	}
