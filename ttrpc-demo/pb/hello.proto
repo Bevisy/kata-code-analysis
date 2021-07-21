@@ -4,6 +4,7 @@ option go_package = "hello";
 
 service GreetingService{
     rpc Greeting(HelloRequest) returns (HelloResponse);
+    rpc Bye(HelloRequest) returns (HelloResponse);
 }
 
 message HelloRequest{

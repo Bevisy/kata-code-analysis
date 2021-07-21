@@ -8,7 +8,6 @@ import (
 	"os"
 
 	hello "github.com/bevisy/kata-code-analysis/ttrpc-demo/pb"
-
 	"github.com/containerd/ttrpc"
 )
 
@@ -28,6 +27,7 @@ func main() {
 		fmt.Fprintln(os.Stderr, err)
 		os.Exit(1)
 	}
+	// 注册 service 的实现
 	hello.RegisterGreetingServiceService(s, &greetingService{})
 	if err := s.Serve(context.Background(), lis); err != nil {
 		fmt.Fprintln(os.Stderr, err)
@@ -36,9 +36,20 @@ func main() {
 
 type greetingService struct{}
 
-func (s greetingService) Greeting(ctx context.Context, r *hello.HelloRequest) (*hello.HelloResponse, error) {
-	if r.Msg == "" {
+func (s greetingService) Greeting(ctx context.Context, req *hello.HelloRequest) (*hello.HelloResponse, error) {
+	if req.Msg == "" {
 		return nil, errors.New("ErrNoInputMsgGiven")
 	}
-	return &hello.HelloResponse{Response: "Hi,ttrpc client"}, nil
+
+	fmt.Fprintln(os.Stdout, "received msg: ", req.Msg)
+	return &hello.HelloResponse{Response: "Hi, client."}, nil
+}
+
+func (s greetingService) Bye(ctx context.Context, req *hello.HelloRequest) (*hello.HelloResponse, error) {
+	if req.Msg == "" {
+		return nil, errors.New("ErrNoInputMsgGiven")
+	}
+
+	fmt.Fprintln(os.Stdout, "received msg: ", req.Msg)
+	return &hello.HelloResponse{Response: "Bye, client."}, nil
 }
